@@ -16,11 +16,11 @@ defmodule Blog.Core.SchemalessTests do
     end
 
     test "with schema 2" do
-      post = post() |> Repo.insert!()
+      %{id: id, title: title, body: body} = post() |> Repo.insert!()
 
       q = from(p in Post, select: %Post{title: p.title, body: p.body})
 
-      assert post = Repo.get_by!(q, id: post.id)
+      assert %Post{title: ^title, body: ^body} = Repo.get_by!(q, id: id)
     end
 
     test "without schema" do
@@ -32,6 +32,26 @@ defmodule Blog.Core.SchemalessTests do
                Repo.get_by!(q, id: Ecto.UUID.dump!(post.id))
     end
   end
+
+  describe "updates a list of fields" do
+    test "with schema" do
+      %{id: id} = post() |> Repo.insert!()
+
+      q = from p in Post, where: p.id == ^id
+
+      assert {1, nil} = Repo.update_all(q, set: [title: "new title"])
+    end
+
+    test "without schema" do
+      post = post() |> Repo.insert!()
+      id = Ecto.UUID.dump!(post.id)
+
+      q = from "posts", where: [id: ^id] # id == ^id doesn't work
+
+      assert {1, nil} = Repo.update_all(q, set: [title: "new title"])
+    end
+  end
+
 
   defp post(fields \\ []) do
     %Post{
