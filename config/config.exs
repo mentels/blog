@@ -14,4 +14,4 @@ config :blog, Blog.Repo,
 
 config :blog, Blog.Repo,
   migration_primary_key: [type: :binary_id],
-  migration_timestamps: [:type, :utc_datetime]
+  migration_timestamps: [type: :utc_datetime]

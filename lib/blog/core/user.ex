@@ -15,5 +15,7 @@ defmodule Blog.Core.User do
     field(:email, :string)
 
     has_many(:posts, Post)
+
+    timestamps(type: :utc_datetime)
   end
 end

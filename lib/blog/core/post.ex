@@ -12,6 +12,6 @@ defmodule Blog.Core.Post do
     field(:body, :string)
     belongs_to(:user, User, type: Ecto.UUID)
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 end
