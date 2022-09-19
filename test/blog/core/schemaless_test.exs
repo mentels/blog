@@ -37,7 +37,7 @@ defmodule Blog.Core.SchemalessTests do
     test "with schema" do
       %{id: id} = post() |> Repo.insert!()
 
-      q = from p in Post, where: p.id == ^id
+      q = from(p in Post, where: p.id == ^id)
 
       assert {1, nil} = Repo.update_all(q, set: [title: "new title"])
     end
@@ -46,12 +46,12 @@ defmodule Blog.Core.SchemalessTests do
       post = post() |> Repo.insert!()
       id = Ecto.UUID.dump!(post.id)
 
-      q = from "posts", where: [id: ^id] # id == ^id doesn't work
+      # id == ^id doesn't work
+      q = from("posts", where: [id: ^id])
 
       assert {1, nil} = Repo.update_all(q, set: [title: "new title"])
     end
   end
-
 
   defp post(fields \\ []) do
     %Post{

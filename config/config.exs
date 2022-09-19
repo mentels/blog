@@ -1,7 +1,8 @@
 import Config
 
-# DB
+config :logger, level: :info
 
+# DB
 config :blog,
   ecto_repos: [Blog.Repo]
 
